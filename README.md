@@ -1,1 +1,1 @@
-# CleanAI
+# TrashNet
