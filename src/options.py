@@ -1,6 +1,8 @@
 import os
 
-RESULTS_DIR = '../results/'
-MODELS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'models'))
-RAW_DATA_DIR = '../data/raw/garbage-classification'
-PROCCESSED_DATA_DIR = '../data/proccessed/garbage-classification'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+RESULTS_DIR = os.path.join(BASE_DIR, 'results')
+MODELS_DIR = os.path.join(BASE_DIR, 'models')
+RAW_DATA_DIR = os.path.join(BASE_DIR, 'data', 'raw', 'garbage-classification')
+PROCESSED_DATA_DIR = os.path.join(BASE_DIR, 'data', 'processed', 'garbage-classification')
