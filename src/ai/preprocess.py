@@ -53,18 +53,32 @@ def load_and_preprocess_data(data_dir, img_size=(96, 96), test_size=0.2, val_siz
     file_paths = []
     labels = []
     
+    if not os.path.exists(data_dir):
+        raise FileNotFoundError(f"Data root directory not found: {data_dir}")
+
+    available_dirs = [d for d in os.listdir(data_dir)
+                     if os.path.isdir(os.path.join(data_dir, d))]
+    print(f"Available Directories: {available_dirs}")
+    
+    dir_mapping = {d.lower(): d for d in available_dirs}
+        
     for class_name in classes:
-        class_dir = os.path.join(data_dir, class_name, 'images')
-        print(f"Checking Directory: {class_dir}")
-        if not os.path.exists(class_dir):
-            print(f"Directory not found: {class_dir}")
+        matched_dir = dir_mapping.get(class_name.lower())
+        if not matched_dir:
+            print(f"Directory not found for class '{class_name}'. Skipping...")
             continue
+        
+        class_dir = os.path.join(data_dir, matched_dir)
+        print(f"Processing: {class_dir}")
         
         for file in os.listdir(class_dir):
             if file.lower().endswith(('.png', '.jpg', '.jpeg')):
                 file_paths.append(os.path.join(class_dir, file))
                 labels.append(class_lables[class_name])
         
+    if len(file_paths) == 0:
+        raise RuntimeError("No images found!")
+    
     X_train, X_test, y_train, y_test = train_test_split(
         file_paths, labels,
         test_size=test_size,
